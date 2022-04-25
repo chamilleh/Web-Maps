@@ -1,0 +1,79 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f0e7d8;
+}
+
+h1 {
+    color: #9c6251;
+    padding: 15px;
+    margin-left: 31px;
+}
+
+p {
+    word-spacing: 5px;
+    word-wrap: break-word;
+    padding: 15px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    width:contain;
+}
+
+#blurb {
+    border: 5px hidden;
+    display:flex;
+    justify-content: left;
+    margin-top:14px;
+    margin-left:31px;
+    height:85px;
+    width:800px;
+   
+}
+
+#viewDiv {
+  padding: 0;
+  margin-top: 10px;
+  margin-left:31px;
+  height: 85%;
+  width: 85%;
+  float: left;
+  position: relative;
+}
+
+#optionsDiv {
+  width: 90%;
+  height: 85%;
+  padding: 0 5px 0 5px;
+  padding: 15px;
+  font-size: 25px;
+  color: #9c6251;
+}
+
+.panel-side {
+  padding: 2px;
+  padding-top:50px;
+  box-sizing: border-box;
+  width: 350px;
+  height: 15%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #9c6251;
+  background-color: #f0e7d8;
+  z-index: 60;
+ 
+}
+
+.select-menu {
+  height: 35%;
+  padding: 15px;
+}
+
+.bottom-panelside {
+  height: 50%;
+}
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        
+          <title>OR Languages</title>
+            <link rel="stylesheet" href="langmap.css"/>
+          <link rel="stylesheet" href="https://js.arcgis.com/4.21/esri/themes/dark/main.css" />
+          <script src="https://js.arcgis.com/4.21/"></script>
+          <script src="langmap.js"></script>
+          <script type="text/plain" id="predominantlang-arcade">
+              var langfields = [
+                {value: $feature.afri_enMIN, alias: 'African Language'}, {value: $feature.ar_enMIN, alias: 'Arabic Language'}, {value: $feature.hy_enMIN, alias: 'Armenian Language'}, {value: $feature.zh_enMIN, alias: 'Chinese Language'}, {value: $feature.frcreo_enMIN, alias: 'French Creole Language'}, {value: $feature.fr_enMIN, alias: 'French Language'}, {value: $feature.de_enMIN, alias: 'German Language'}, {value: $feature.el_enMIN, alias: 'Greek Language'}, {value: $feature.gu_enMIN, alias: 'Gujaranti Language'}, {value: $feature.he_enMIN, alias: 'Hebrew Language'}, {value: $feature.hi_enMIN, alias: 'Hindi Language'}, {value: $feature.hmn_enMIN, alias: 'Hmong Language'}, {value: $feature.hu_enMIN, alias: 'Hungarian Language'}, {value: $feature.it_enMIN, alias: 'Italian Language'}, {value: $feature.ja_enMIN, alias: 'Japanese Language'}, {value: $feature.ko_enMIN, alias: 'Korean Language'}, {value: $feature.lo_enMIN, alias: 'Laotian Language'}, {value: $feature.mkh_enMIN, alias: 'Mon-Khmer, Cambodian Language'}, {value: $feature.nv_enMIN, alias: 'Navajo Language'}, {value: $feature.other_enMIN, alias: 'Other and unspecified languages'}, {value: $feature.oas_enMIN, alias: 'Other Asian Language'}, {value: $feature.inc_enMIN, alias: 'Other Indic Language'}, {value: $feature.ine_enMIN, alias: 'Other Indo-European Languages'}, {value: $feature.ona_enMIN, alias: 'Other Native North American Language'}, {value: $feature.opi_enMIN, alias: 'Other Pacific Island Language'}, {value: $feature.sla_enMIN, alias: 'Other Slavic Language'}, {value: $feature.wde_enMIN, alias: 'Other West Germanic Language'}, {value: $feature.fa_enMIN, alias: 'Persian Language'}, {value: $feature.pl_enMIN, alias: 'Polish Language'}, {value: $feature.pt_enMIN, alias: 'Portuguese or Portuguese Creole Language'}, {value: $feature.ru_enMIN, alias: 'Russian Language'}, {value: $feature.scd_enMIN, alias: 'Scandinavian Language'}, {value: $feature.hr_enMIN, alias: 'Serbo-Croatian Language'}, {value: $feature.es_enMIN, alias: 'Spanish Language'}, {value: $feature.tl_enMIN, alias: 'Tagalog Language'}, {value: $feature.th_enMIN, alias: 'Thai Language'}, {value: $feature.ur_enMIN, alias: 'Urdu Language'}, {value: $feature.vi_enMIN, alias: 'Vietnamese Language'}, {value: $feature.yi_enMIN, alias: 'Yiddish Language'}
+              ];
+        
+              function getPredominantCategory(fieldsArray){
+                var output = [];
+                var maxValue = -Infinity;
+                var maxCategory = "";
+                
+                for(var k in fieldsArray){
+                  if(fieldsArray[k].value > maxValue){
+                    maxValue = fieldsArray[k].value;
+                    maxCategory = fieldsArray[k].alias;
+                  }
+                }
+
+                var percentage = Round((maxValue/$feature.Total)*100,2)
+                if(percentage > 0) {
+                  var outputString = percentage + '%' + " " + maxCategory
+                  output = [outputString]
+                }
+                  
+                maxValue = -Infinity;
+                var maxCategory2 = "";
+                
+                for(var k in fieldsArray){
+                  if(fieldsArray[k].value > maxValue){
+                    if(fieldsArray[k].alias != maxCategory) {
+                      maxValue = fieldsArray[k].value;
+                      maxCategory2 = fieldsArray[k].alias;
+                    }
+                  }
+                }
+
+                  percentage = Round((maxValue/$feature.Total)*100,2)
+                  if(percentage > 0) {
+                    var outputString2 = percentage + '%' + " " + maxCategory2
+                    output = [outputString, outputString2]
+                  }
+
+                maxValue = -Infinity;
+                var maxCategory3 = "";
+                
+                for(var k in fieldsArray){
+                  if(fieldsArray[k].value > maxValue){
+                    if(fieldsArray[k].alias != maxCategory) {
+                      if(fieldsArray[k].alias != maxCategory2) {
+                    maxValue = fieldsArray[k].value;
+                    maxCategory3 = fieldsArray[k].alias;
+                      }
+                    }
+                  }
+                }
+
+                  percentage = Round((maxValue/$feature.Total)*100,2)
+                  if(percentage > 0) {
+                    var outputString3 = percentage + '%' + " " + maxCategory3
+                    output = [outputString, outputString2, outputString3]
+                  }
+                return output;
+              }
+        
+              getPredominantCategory(langfields);
+          </script>
+        
+           <!--STRENGTH OF MAJORITY-->
+          <script type="text/plain" id="strength-arcade">
+            var fieldValues = [$feature.es_enMIN, $feature.ru_enMIN ];
+            var winner = Max(fieldValues);
+            var total = Sum(fieldValues);
+            return (winner/total) * 100;
+        
+          </script>
+        </head>
+        
+        <body>
+            <h1>Alternative Languages Spoken in Oregon</h1>
+           
+            <div id="blurb">
+            There are many alternative languages to English in Oregon. This data shows results from the Census Bureau's 2015 American Community Survey. A subset of the data delineates counts of the population who stated that they speak a different language and have minimal comfort speaking english. This map may be useful in reaching a wider audience and determining potential translation services that may be needed.
+            </div>
+                <div id="viewDiv"></div>
+              
+            <div class="panel-side">
+
+                <div class="select-menu">
+                    <b>Select a County:</b>
+                    <select id="county-select" class="esri-widget">
+                    </select>
+                    <h5>The map will zoom into the selected county. Explore the different census tract areas by click on one.</h5>
+                </div>
+                <div class="bottom-panelside">
+                    <div id="" </div>
+                </div>
+
+            </div>
+
+        </body>
+        
+        </html>
